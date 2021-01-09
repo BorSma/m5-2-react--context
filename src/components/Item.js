@@ -30,6 +30,12 @@ const Item = ({
   );
 };
 
+const items = [
+  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
+  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
+  { id: "farm", name: "Farm", cost: 1000, value: 80 },
+];
+
 const Wrapper = styled.button`
   width: 100%;
   display: flex;
@@ -60,4 +66,6 @@ const Right = styled.div`
   padding: 0 20px;
 `;
 
-export default Item;
+export {Item, items};
+
+
