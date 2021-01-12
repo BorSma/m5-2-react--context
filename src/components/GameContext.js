@@ -9,7 +9,6 @@ export const GameContext = React.createContext(null);
 
 export const GameProvider = ({ children }) => {
   const [numCookies, setNumCookies] = usePersistedState(1000, "num-cookies");
-
   const [purchasedItems, setPurchasedItems] = usePersistedState(
     {
       cursor: 0,

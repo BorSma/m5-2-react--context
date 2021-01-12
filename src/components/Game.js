@@ -1,26 +1,26 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import {GameContext} from "./GameContext";
+import { GameContext } from "./GameContext";
 import cookieSrc from "../cookie.svg";
 import { Item, items } from "./Item";
 
-
-
 const Game = () => {
-  
-  const { numCookies, setNumCookies, purchasedItems, setPurchasedItems, cookiesPerSecond } = useContext(GameContext);
+  const {
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    cookiesPerSecond,
+  } = useContext(GameContext);
 
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
 
-  
-
   React.useEffect(() => {
     document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
-    
 
     return () => {
       document.title = "Cookie Clicker Workshop";
@@ -36,8 +36,19 @@ const Game = () => {
 
     window.addEventListener("keydown", handleKeydown);
 
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("closeTime")) {
+        const unloadTime = localStorage.getItem("closeTime");
+        const timeDiff = Math.floor((Date.now() - unloadTime) / 1000);
+        console.log(`The window has been closed for`,timeDiff,`secs`)
+        setNumCookies(numCookies + cookiesPerSecond*timeDiff);
+        console.log(`You mined`,cookiesPerSecond*timeDiff,`cookies while you were away`)
+      }
+    });
+
     return () => {
       window.removeEventListener("keydown", handleKeydown);
+      localStorage.setItem("closeTime", Date.now());
     };
   });
 
@@ -46,8 +57,7 @@ const Game = () => {
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{cookiesPerSecond}</strong> cookies
-          per second
+          <strong>{cookiesPerSecond}</strong> cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />
